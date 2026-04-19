@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kisan Suraksha AI - World's Best Farmer App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #166534 0%, #22c55e 100%);
+            border-radius: 0 0 30px 30px;
+            padding: 40px 20px;
+            text-align: center;
+            color: white;
+        }
+        
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 30px;
+            border: 4px solid white;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            object-fit: cover;
+        }
+        
+        .badge {
+            position: absolute;
+            bottom: -5px;
+            right: -5px;
+            background: #f59e0b;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #166534;
+            font-size: 14px;
+        }
+        
+        .title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        
+        .subtitle {
+            font-size: 22px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+        
+        .tagline {
+            font-size: 14px;
+            opacity: 0.8;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .stats-container {
+            background: white;
+            margin: -30px 20px 20px;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        .welcome-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            margin: 20px;
+            border-radius: 24px;
+            padding: 24px;
+        }
+        
+        .welcome-greeting {
+            font-size: 14px;
+            color: #92400e;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .welcome-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #92400e;
+            margin: 8px 0;
+        }
+        
+        .welcome-subtext {
+            font-size: 15px;
+            color: #a16207;
+            line-height: 1.5;
+        }
+        
+        .section-header {
+            margin: 30px 20px 16px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+        
+        .section-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        .features-grid {
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .feature-card {
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .feature-card:hover {
+            transform: scale(0.98);
+        }
+        
+        .feature-card.ai { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .feature-card.doctor { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .feature-card.weather { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .feature-card.market { background: linear-gradient(135deg, #22c55e, #16a34a); }
+        .feature-card.schemes { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 28px;
+        }
+        
+        .feature-content {
+            flex: 1;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .feature-hindi {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+        
+        .feature-desc {
+            font-size: 13px;
+            opacity: 0.6;
+            margin-top: 4px;
+        }
+        
+        .feature-arrow {
+            font-size: 20px;
+            opacity: 0.6;
+        }
+        
+        .language-scroll {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .language-btn {
+            padding: 12px 24px;
+            background: white;
+            border-radius: 25px;
+            border: 2px solid #e5e7eb;
+            font-size: 16px;
+            font-weight: 600;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        
+        .language-btn:hover, .language-btn.active {
+            background: #166534;
+            border-color: #166534;
+            color: white;
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #166534, #14532d);
+            margin: 30px 20px;
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+        
+        .footer-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            margin-bottom: 16px;
+            object-fit: cover;
+        }
+        
+        .made-by {
+            font-size: 14px;
+            color: #bbf7d0;
+        }
+        
+        .creator-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 4px 0;
+        }
+        
+        .creator-tag {
+            font-size: 14px;
+            color: #86efac;
+        }
+        
+        .app-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        /* Chat Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 400px;
+            height: 80%;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .modal-header {
+            background: #166534;
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .modal-iframe {
+            width: 100%;
+            height: calc(100% - 60px);
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-container">
+            <img src="https://via.placeholder.com/120/22c55e/ffffff?text=K" alt="Logo" class="logo">
+            <div class="badge">✨</div>
+        </div>
+        <div class="title">Kisan Suraksha AI</div>
+        <div class="subtitle">किसान सुरक्षा एआई</div>
+        <div class="tagline">Your AI Farming Companion</div>
+    </div>
+
+    <div class="stats-container">
+        <div class="stat-item">
+            <div class="stat-icon">☀️</div>
+            <div class="stat-value">32°C</div>
+            <div class="stat-label">Today</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">💧</div>
+            <div class="stat-value">65%</div>
+            <div class="stat-label">Humidity</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">📈</div>
+            <div class="stat-value">+2.5%</div>
+            <div class="stat-label">Wheat</div>
+        </div>
+    </div>
+
+    <div class="welcome-card">
+        <div class="welcome-greeting">Welcome!</div>
+        <div class="welcome-text">नमस्ते किसान भाई! 🌾</div>
+        <div class="welcome-subtext">
+            Get crop solutions, weather updates, and market prices - all in one place.
+        </div>
+    </div>
+
+    <div class="section-header">
+        <div class="section-title">Quick Actions</div>
+        <div class="section-subtitle">त्वरित कार्रवाई</div>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card ai" onclick="openChat()">
+            <div class="feature-icon">💬</div>
+            <div class="feature-content">
+                <div class="feature-title">AI Chatbot</div>
+                <div class="feature-hindi">एआई चैटबॉट</div>
+                <div class="feature-desc">Ask anything about farming</div>
+            </div>
+            <div class="feature-arrow">›</div>
+        </div>
+
+        <div class="feature-card doctor">
+            <div class="feature-icon">📸</div>
+            <div class="feature-content">
+                <div class="feature-title">Crop Doctor</div>
+                <div class="feature-hindi">फसल डॉक्टर</div>
+                <div class="feature-desc">Detect diseases with photo</div>
+            </div>
+            <div class="feature-arrow">›</div>
+        </div>
+
+        <div class="feature-card weather">
+            <div class="feature-icon">🌤️</div>
+            <div class="feature-content">
+                <div class="feature-title">Weather</div>
+                <div class="feature-hindi">मौसम</div>
+                <div class="feature-desc">7-day farm forecast</div>
+            </div>
+            <div class="feature-arrow">›</div>
+        </div>
+
+        <div class="feature-card market">
+            <div class="feature-icon">💰</div>
+            <div class="feature-content">
+                <div class="feature-title">Mandi Bhav</div>
+                <div class="feature-hindi">मंडी भाव</div>
+                <div class="feature-desc">Daily crop rates</div>
+            </div>
+            <div class="feature-arrow">›</div>
+        </div>
+
+        <div class="feature-card schemes">
+            <div class="feature-icon">📋</div>
+            <div class="feature-content">
+                <div class="feature-title">Govt Schemes</div>
+                <div class="feature-hindi">सरकारी योजनाएं</div>
+                <div class="feature-desc">Farmer benefits</div>
+            </div>
+            <div class="feature-arrow">›</div>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <div class="section-title">Select Language</div>
+        <div class="section-subtitle">भाषा चुनें</div>
+    </div>
+
+    <div class="language-scroll">
+        <button class="language-btn">English</button>
+        <button class="language-btn active">हिंदी</button>
+        <button class="language-btn">मराठी</button>
+        <button class="language-btn">ਪੰਜਾਬੀ</button>
+    </div>
+
+    <div class="footer">
+        <img src="https://via.placeholder.com/60/22c55e/ffffff?text=K" alt="Logo" class="footer-logo">
+        <div class="made-by">Crafted with ❤️ by</div>
+        <div class="creator-name">Vedanshu Rathi</div>
+        <div class="creator-tag">Building for Bharat 🚀</div>
+        <div class="app-badge">🌾 World's Best Farmer App</div>
+    </div>
+
+    <!-- Chat Modal -->
+    <div class="modal" id="chatModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>AI Chatbot</span>
+                <button class="modal-close" onclick="closeChat()">×</button>
+            </div>
+            <iframe class="modal-iframe" src="https://www.jotform.com/app/252372506931456"></iframe>
+        </div>
+    </div>
+
+    <script>
+        function openChat() {
+            document.getElementById('chatModal').classList.add('active');
+        }
+        
+        function closeChat() {
+            document.getElementById('chatModal').classList.remove('active');
+        }
+
+        // Language buttons
+        document.querySelectorAll('.language-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.language-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: kisan-suraksha-ai
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    plan: free

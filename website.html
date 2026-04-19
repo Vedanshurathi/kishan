@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kisan Suraksha AI - किसान सुरक्षा एआई</title>
+  <meta name="description" content="Kisan Suraksha AI - Your AI Farming Companion for Indian Farmers">
+  <meta name="theme-color" content="#166534">
+  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Hind', sans-serif; background: #f8fafc; color: #1f2937; }
+
+    /* Navigation */
+    .navbar { background: #166534; padding: 15px 20px; position: sticky; top: 0; z-index: 100; }
+    .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .nav-logo { color: white; font-size: 24px; font-weight: 700; cursor: pointer; }
+    .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+    .nav-link { background: transparent; border: none; color: white; padding: 8px 12px; cursor: pointer; border-radius: 8px; font-size: 14px; }
+    .nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.2); }
+    .mobile-menu-btn { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+
+    /* Main Content */
+    .main-content { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+    /* Home Page */
+    .hero { background: linear-gradient(135deg, #166534 0%, #22c55e 100%); color: white; padding: 60px 20px; border-radius: 20px; text-align: center; margin-bottom: 30px; }
+    .hero h1 { font-size: 48px; margin-bottom: 10px; }
+    .hero .hindi { font-size: 28px; opacity: 0.9; }
+    .hero p { font-size: 20px; margin: 20px 0; }
+    .hero-stats { display: flex; justify-content: center; gap: 30px; margin-top: 30px; flex-wrap: wrap; }
+    .stat-card { background: rgba(255,255,255,0.2); padding: 20px 30px; border-radius: 12px; }
+    .stat-number { display: block; font-size: 36px; font-weight: 700; }
+    .stat-label { font-size: 14px; }
+
+    /* Quick Actions */
+    .section-title { font-size: 28px; color: #166534; margin-bottom: 10px; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 30px; }
+    .feature-card { background: white; padding: 20px; border-radius: 12px; display: flex; align-items: center; gap: 15px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1); transition: transform 0.2s; }
+    .feature-card:hover { transform: translateY(-3px); }
+    .feature-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; }
+    .feature-info { flex: 1; }
+    .feature-title { font-weight: 600; font-size: 16px; }
+    .feature-hindi { color: #166534; font-size: 14px; }
+    .feature-desc { color: #6b7280; font-size: 13px; }
+
+    /* Pages */
+    .page { display: none; }
+    .page.active { display: block; }
+    .page-header { background: linear-gradient(135deg, #166534 0%, #22c55e 100%); color: white; padding: 30px 20px; border-radius: 16px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+    .page-header h1 { font-size: 28px; }
+    .page-header p { opacity: 0.9; font-size: 14px; }
+
+    /* Crop Calendar */
+    .filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .search-input { padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; flex: 1; min-width: 200px; }
+    .filter-btn { padding: 12px 20px; border: 2px solid #166534; background: white; color: #166534; border-radius: 8px; cursor: pointer; font-weight: 600; }
+    .filter-btn.active { background: #166534; color: white; }
+    .crop-list { display: grid; gap: 15px; }
+    .crop-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .crop-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .crop-names h3 { font-size: 20px; color: #166534; }
+    .crop-names .hindi { color: #6b7280; }
+    .season-badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .season-badge.kharif { background: #fef3c7; color: #d97706; }
+    .season-badge.rabi { background: #dbeafe; color: #2563eb; }
+    .crop-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 15px; }
+    .crop-detail { background: #f8fafc; padding: 10px; border-radius: 8px; }
+    .crop-detail .label { font-size: 11px; color: #6b7280; text-transform: uppercase; }
+    .crop-detail .value { font-weight: 600; font-size: 14px; }
+    .crop-tips { background: #f0fdf4; padding: 12px; border-radius: 8px; border-left: 4px solid #166534; font-size: 14px; }
+
+    /* Market Prices */
+    .price-list { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .price-header-row, .price-row { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr; padding: 15px 20px; align-items: center; }
+    .price-header-row { background: #166534; color: white; font-weight: 600; }
+    .price-row { border-bottom: 1px solid #e5e7eb; }
+    .price-row:hover { background: #f8fafc; }
+    .crop-info .crop-name { font-weight: 600; display: block; }
+    .crop-info .crop-hindi { font-size: 13px; color: #6b7280; }
+    .price { font-weight: 700; color: #166534; font-size: 18px; }
+    .msp { color: #6b7280; font-size: 14px; }
+    .change-info { font-weight: 600; font-size: 14px; }
+    .change-info.up { color: #16a34a; }
+    .change-info.down { color: #dc2626; }
+    .change-info.stable { color: #6b7280; }
+
+    /* Weather */
+    .current-weather { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white; padding: 40px 20px; border-radius: 16px; text-align: center; margin-bottom: 20px; }
+    .weather-main { font-size: 72px; font-weight: 700; }
+    .weather-main .temp { font-size: 72px; }
+    .weather-main .condition { display: block; font-size: 24px; font-weight: 400; margin-top: 10px; }
+    .location { margin-top: 15px; font-size: 18px; opacity: 0.9; }
+    .weather-stats { display: flex; justify-content: center; gap: 40px; margin-top: 30px; flex-wrap: wrap; }
+    .weather-stats .stat { text-align: center; }
+    .weather-stats .value { display: block; font-size: 24px; font-weight: 700; }
+    .weather-stats .label { font-size: 14px; opacity: 0.9; }
+    .forecast-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-bottom: 20px; }
+    .forecast-day { background: white; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .forecast-day .day-name { font-weight: 600; display: block; }
+    .forecast-day .day-temp { font-size: 24px; font-weight: 700; color: #166534; display: block; margin: 10px 0; }
+    .weather-alerts { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .alert { padding: 15px; border-radius: 8px; margin-bottom: 10px; display: flex; gap: 12px; align-items: flex-start; }
+    .alert-high { background: #fef2f2; border-left: 4px solid #dc2626; }
+    .alert-low { background: #f0fdf4; border-left: 4px solid #16a34a; }
+    .alert strong { display: block; margin-bottom: 5px; }
+
+    /* Schemes */
+    .category-scroll { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 20px; }
+    .category-btn { padding: 10px 16px; border: 2px solid #e5e7eb; background: white; border-radius: 20px; cursor: pointer; white-space: nowrap; }
+    .category-btn.active { background: #166534; color: white; border-color: #166534; }
+    .schemes-list { display: grid; gap: 15px; }
+    .scheme-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .scheme-header { padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .scheme-header:hover { background: #f8fafc; }
+    .scheme-title h3 { color: #166534; font-size: 18px; }
+    .scheme-title .hindi { color: #6b7280; font-size: 14px; }
+    .scheme-details { padding: 0 20px 20px; border-top: 1px solid #e5e7eb; }
+    .scheme-details .description { padding: 15px 0; color: #4b5563; }
+    .detail-item { display: flex; gap: 10px; margin-bottom: 10px; }
+    .detail-item .label { font-weight: 600; min-width: 100px; }
+    .btn { display: inline-block; padding: 12px 24px; background: #166534; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; }
+    .btn:hover { background: #22c55e; }
+
+    /* Calculator */
+    .calculator { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .calc-input { margin-bottom: 15px; }
+    .calc-input label { display: block; margin-bottom: 5px; font-weight: 600; }
+    .calc-input input { width: 100%; padding: 12px; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 16px; }
+    .calc-result { background: #f8fafc; padding: 20px; border-radius: 8px; margin-top: 20px; }
+    .result-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
+    .result-item:last-child { border-bottom: none; }
+    .result-item.highlight { font-size: 20px; font-weight: 700; color: #16a34a; padding-top: 15px; }
+    .result-item.highlight.loss { color: #dc2626; }
+
+    /* Learn */
+    .tutorials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 30px; }
+    .tutorial-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .tumbnail { background: linear-gradient(135deg, #166534 0%, #22c55e 100%); height: 120px; display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; }
+    .tutorial-info { padding: 15px; }
+    .tutorial-info .category { display: inline-block; background: #dbeafe; color: #2563eb; padding: 4px 10px; border-radius: 4px; font-size: 12px; }
+    .tutorial-info h4 { margin: 10px 0 5px; }
+    .tutorial-info .hindi { color: #6b7280; font-size: 14px; }
+    .tips-list { display: grid; gap: 10px; margin-bottom: 30px; }
+    .tip-card { background: white; padding: 15px 20px; border-radius: 12px; display: flex; gap: 12px; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .tip-icon { width: 30px; height: 30px; background: #166534; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .contact-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+    .contact-card { background: white; padding: 20px; border-radius: 12px; display: flex; gap: 15px; align-items: center; text-decoration: none; color: inherit; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .contact-card:hover { transform: translateY(-3px); }
+
+    /* Disease */
+    .disease-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+    .disease-card { background: white; padding: 15px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .disease-card:hover { background: #f0fdf4; }
+    .disease-card h4 { color: #166534; font-size: 14px; }
+    .disease-card .hindi { font-size: 12px; color: #6b7280; }
+    .disease-result { background: white; padding: 20px; border-radius: 12px; margin-top: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .disease-header { display: flex; gap: 15px; align-items: center; margin-bottom: 20px; color: #dc2626; }
+    .disease-section { margin-bottom: 20px; }
+    .disease-section h4 { color: #166534; margin-bottom: 10px; }
+    .treatment { background: #fef2f2; padding: 15px; border-radius: 8px; border-left: 4px solid #dc2626; }
+
+    /* Floating Buttons */
+    .jotform-chat { position: fixed; bottom: 20px; right: 20px; z-index: 9999; }
+    .jotform-voice { position: fixed; bottom: 20px; right: 120px; z-index: 9999; }
+    .chat-float-btn, .voice-float-btn { display: flex; align-items: center; gap: 8px; padding: 14px 20px; border-radius: 50px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25); color: white; }
+    .chat-float-btn { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
+    .chat-float-btn:hover { transform: translateY(-2px); }
+    .voice-float-btn { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
+    .voice-float-btn:hover { transform: translateY(-2px); }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .mobile-menu-btn { display: block; }
+      .hero h1 { font-size: 32px; }
+      .hero .hindi { font-size: 20px; }
+      .price-header-row, .price-row { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo" onclick="showPage('home')">🌾 Kisan Suraksha AI</div>
+      <div class="nav-links">
+        <button class="nav-link active" onclick="showPage('home')">Home</button>
+        <button class="nav-link" onclick="showPage('calendar')">Crop Calendar</button>
+        <button class="nav-link" onclick="showPage('disease')">Crop Doctor</button>
+        <button class="nav-link" onclick="showPage('weather')">Weather</button>
+        <button class="nav-link" onclick="showPage('market')">Mandi Prices</button>
+        <button class="nav-link" onclick="showPage('schemes')">Schemes</button>
+        <button class="nav-link" onclick="showPage('calculator')">Calculator</button>
+        <button class="nav-link" onclick="showPage('learn')">Learn</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content" id="mainContent">
+    <!-- Home Page -->
+    <div id="home" class="page active">
+      <div class="hero">
+        <h1>Kisan Suraksha AI</h1>
+        <p class="hindi">किसान सुरक्षा एआई</p>
+        <p>Your Smart Farming Companion 🌾</p>
+        <div class="hero-stats">
+          <div class="stat-card"><span class="stat-number">35+</span><span class="stat-label">Crops</span></div>
+          <div class="stat-card"><span class="stat-number">25+</span><span class="stat-label">Diseases</span></div>
+          <div class="stat-card"><span class="stat-number">20+</span><span class="stat-label">Prices</span></div>
+          <div class="stat-card"><span class="stat-number">12+</span><span class="stat-label">Schemes</span></div>
+        </div>
+      </div>
+
+      <h2 class="section-title">Quick Access</h2>
+      <div class="features-grid">
+        <div class="feature-card" onclick="showPage('calendar')">
+          <div class="feature-icon" style="background: #22c55e;">📅</div>
+          <div class="feature-info">
+            <div class="feature-title">Crop Calendar</div>
+            <div class="feature-hindi">फसल कैलेंडर</div>
+            <div class="feature-desc">When to sow & harvest</div>
+          </div>
+        </div>
+        <div class="feature-card" onclick="showPage('disease')">
+          <div class="feature-icon" style="background: #ef4444;">🔬</div>
+          <div class="feature-info">
+            <div class="feature-title">Crop Doctor</div>
+            <div class="feature-hindi">फसल डॉक्टर</div>
+            <div class="feature-desc">Detect & treat diseases</div>
+          </div>
+        </div>
+        <div class="feature-card" onclick="showPage('weather')">
+          <div class="feature-icon" style="background: #8b5cf6;">🌤️</div>
+          <div class="feature-info">
+            <div class="feature-title">Weather</div>
+            <div class="feature-hindi">मौसम</div>
+            <div class="feature-desc">7-day forecast & alerts</div>
+          </div>
+        </div>
+        <div class="feature-card" onclick="showPage('market')">
+          <div class="feature-icon" style="background: #f59e0b;">💰</div>
+          <div class="feature-info">
+            <div class="feature-title">Mandi Prices</div>
+            <div class="feature-hindi">मंडी भाव</div>
+            <div class="feature-desc">Today's rates & MSP</div>
+          </div>
+        </div>
+        <div class="feature-card" onclick="showPage('schemes')">
+          <div class="feature-icon" style="background: #3b82f6;">🏛️</div>
+          <div class="feature-info">
+            <div class="feature-title">Govt Schemes</div>
+            <div class="feature-hindi">सरकारी योजनाएं</div>
+            <div class="feature-desc">Farmer welfare schemes</div>
+          </div>
+        </div>
+        <div class="feature-card" onclick="showPage('calculator')">
+          <div class="feature-icon" style="background: #ec4899;">🧮</div>
+          <div class="feature-info">
+            <div class="feature-title">Calculator</div>
+            <div class="feature-hindi">कैलकुलेटर</div>
+            <div class="feature-desc">Profit, loan & more</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Crop Calendar -->
+    <div id="calendar" class="page">
+      <div class="page-header" style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">
+        <span style="font-size: 32px;">📅</span>
+        <div>
+          <h1>Crop Calendar</h1>
+          <p>फसल कैलेंडर - When to sow and harvest</p>
+        </div>
+      </div>
+      <div class="filters">
+        <input type="text" class="search-input" id="cropSearch" placeholder="Search crops..." onkeyup="filterCrops()">
+        <button class="filter-btn active" onclick="filterSeason('all')">All</button>
+        <button class="filter-btn" onclick="filterSeason('Kharif')">Kharif</button>
+        <button class="filter-btn" onclick="filterSeason('Rabi')">Rabi</button>
+      </div>
+      <div class="crop-list" id="cropList"></div>
+    </div>
+
+    <!-- Disease -->
+    <div id="disease" class="page">
+      <div class="page-header" style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);">
+        <span style="font-size: 32px;">🔬</span>
+        <div>
+          <h1>Crop Doctor</h1>
+          <p>फसल डॉक्टर - Detect and treat diseases</p>
+        </div>
+      </div>
+      <h3>📚 Disease Database</h3>
+      <div class="disease-grid" id="diseaseGrid"></div>
+      <div class="disease-result" id="diseaseResult" style="display:none;"></div>
+    </div>
+
+    <!-- Weather -->
+    <div id="weather" class="page">
+      <div class="page-header" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+        <span style="font-size: 32px;">🌤️</span>
+        <div>
+          <h1>Weather</h1>
+          <p>मौसम - 7-day forecast and farming tips</p>
+        </div>
+      </div>
+      <div class="current-weather">
+        <div class="weather-main">☁️ <span class="temp">32°C</span></div>
+        <div class="condition">Partly Cloudy</div>
+        <div class="location">📍 Delhi, India</div>
+        <div class="weather-stats">
+          <div class="stat"><span class="value">65%</span><span class="label">Humidity</span></div>
+          <div class="stat"><span class="value">12 km/h</span><span class="label">Wind</span></div>
+          <div class="stat"><span class="value">34°C</span><span class="label">Feels Like</span></div>
+        </div>
+      </div>
+      <div class="weather-alerts">
+        <div class="alert alert-high"><strong>⚠️ Warning</strong><p>Light rain expected on Wednesday. Good time for sowing kharif crops.</p></div>
+        <div class="alert alert-low"><strong>i️ Info</strong><p>Heat wave likely on Friday-Saturday. Protect crops from heat stress.</p></div>
+      </div>
+      <h3>7-Day Forecast</h3>
+      <div class="forecast-grid" id="forecastGrid"></div>
+      <h3>Today's Farming Tips</h3>
+      <div class="tips-list" id="farmingTips"></div>
+    </div>
+
+    <!-- Market -->
+    <div id="market" class="page">
+      <div class="page-header" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+        <span style="font-size: 32px;">💰</span>
+        <div>
+          <h1>Mandi Prices</h1>
+          <p>मंडी भाव - Today's agricultural prices</p>
+        </div>
+      </div>
+      <div class="price-list" id="priceList"></div>
+    </div>
+
+    <!-- Schemes -->
+    <div id="schemes" class="page">
+      <div class="page-header" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
+        <span style="font-size: 32px;">🏛️</span>
+        <div>
+          <h1>Government Schemes</h1>
+          <p>सरकारी योजनाएं - Farmer welfare programs</p>
+        </div>
+      </div>
+      <div class="schemes-list" id="schemesList"></div>
+    </div>
+
+    <!-- Calculator -->
+    <div id="calculator" class="page">
+      <div class="page-header" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);">
+        <span style="font-size: 32px;">🧮</span>
+        <div>
+          <h1>Calculator</h1>
+          <p>कैलकुलेटर - Farming calculators</p>
+        </div>
+      </div>
+      <div class="calculator">
+        <h3>💰 Profit Calculator</h3>
+        <div class="calc-input">
+          <label>Land Area (Acre)</label>
+          <input type="number" id="area" placeholder="e.g., 2" oninput="calcProfit()">
+        </div>
+        <div class="calc-input">
+          <label>Total Cost (₹)</label>
+          <input type="number" id="cost" placeholder="e.g., 50000" oninput="calcProfit()">
+        </div>
+        <div class="calc-input">
+          <label>Total Yield (Quintal)</label>
+          <input type="number" id="yield" placeholder="e.g., 20" oninput="calcProfit()">
+        </div>
+        <div class="calc-input">
+          <label>Selling Price (₹/Quintal)</label>
+          <input type="number" id="price" placeholder="e.g., 2500" oninput="calcProfit()">
+        </div>
+        <div class="calc-result" id="calcResult">
+          <div class="result-item"><span>Total Income</span><span id="totalIncome">₹0</span></div>
+          <div class="result-item"><span>Total Cost</span><span id="totalCost">₹0</span></div>
+          <div class="result-item highlight" id="netProfit"><span>Net Profit</span><span>₹0</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Learn -->
+    <div id="learn" class="page">
+      <div class="page-header" style="background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);">
+        <span style="font-size: 32px;">📚</span>
+        <div>
+          <h1>Learn</h1>
+          <p>सीखें - Tutorials and farming tips</p>
+        </div>
+      </div>
+      <h3>📺 Video Tutorials</h3>
+      <div class="tutorials-grid" id="tutorialsGrid"></div>
+      <h3>💡 Daily Farming Tips</h3>
+      <div class="tips-list" id="tipsList"></div>
+      <h3>📞 Help & Support</h3>
+      <div class="contact-cards">
+        <a href="tel:18001801555" class="contact-card">
+          <span style="font-size: 32px;">📞</span>
+          <div><h4>Kisan Call Center</h4><span>1800-180-1555</span></div>
+        </a>
+        <a href="https://pmkisan.gov.in" target="_blank" class="contact-card">
+          <span style="font-size: 32px;">🌐</span>
+          <div><h4>PM Kisan Portal</h4><span>pmkisan.gov.in</span></div>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- JotForm Chat & Voice -->
+  <div class="jotform-chat">
+    <button class="chat-float-btn" onclick="openChat()">
+      <span>💬</span> Chat
+    </button>
+  </div>
+  <div class="jotform-voice">
+    <button class="voice-float-btn" onclick="openVoice()">
+      <span>🎤</span> Voice
+    </button>
+  </div>
+
+  <script>
+    // ==================== DATA ====================
+    const crops = [
+      { crop: 'Wheat', hindi: 'गेहूं', season: 'Rabi', sowing: 'October-November', harvest: 'March-April', duration: '120-150 days', water: '4-5 irrigations', tips: 'Use HD 2328, HD 3086 varieties. Apply urea in two doses.', yield: '30-50 q/ha' },
+      { crop: 'Rice', hindi: 'धान', season: 'Kharif', sowing: 'June-July', harvest: 'October-November', duration: '120-150 days', water: 'Flooded', tips: 'Use Pusa Basmati-1, IR-64. Transplant within 20-25 days.', yield: '40-60 q/ha' },
+      { crop: 'Maize', hindi: 'मक्का', season: 'Kharif', sowing: 'June-July', harvest: 'September-October', duration: '80-100 days', water: '4-5 irrigations', tips: 'Use HQPM-1, Pratap. Sow at 60cm row spacing.', yield: '60-80 q/ha' },
+      { crop: 'Cotton', hindi: 'कपास', season: 'Kharif', sowing: 'April-May', harvest: 'October-December', duration: '150-180 days', water: '5-6 irrigations', tips: 'Use Bt cotton seeds. Avoid excessive nitrogen.', yield: '15-20 q/ha' },
+      { crop: 'Sugarcane', hindi: 'गन्ना', season: 'Kharif', sowing: 'February-March', harvest: 'December-April', duration: '12-18 months', water: '15-20 irrigations', tips: 'Use Co-0238. Press mud application improves yield.', yield: '600-700 q/ha' },
+      { crop: 'Mustard', hindi: 'सरसों', season: 'Rabi', sowing: 'October-November', harvest: 'February-March', duration: '120-140 days', water: '3-4 irrigations', tips: 'Use Varuna, RL-1359. Sow in lines for better yield.', yield: '12-18 q/ha' },
+      { crop: 'Gram', hindi: 'चना', season: 'Rabi', sowing: 'October-November', harvest: 'March-April', duration: '120-150 days', water: '2-3 irrigations', tips: 'Use JG 11, BG 372. Inoculate with Rhizobium culture.', yield: '15-25 q/ha' },
+      { crop: 'Potato', hindi: 'आलू', season: 'Rabi', sowing: 'October-November', harvest: 'February-March', duration: '90-120 days', water: '5-6 irrigations', tips: 'Use Kufri Jyoti, Kufri Bahar. Maintain furrow irrigation.', yield: '200-250 q/ha' },
+      { crop: 'Onion', hindi: 'प्याज', season: 'Rabi', sowing: 'October-November', harvest: 'March-April', duration: '90-120 days', water: '5-6 irrigations', tips: 'Use Nasik Red, Pusa Red. Harvest when tops fall over.', yield: '250-300 q/ha' },
+      { crop: 'Tomato', hindi: 'टमाटर', season: 'Rabi', sowing: 'October-November', harvest: 'January-March', duration: '90-120 days', water: 'Regular', tips: 'Use Pusa Ruby, Sarvani. Staking necessary.', yield: '300-400 q/ha' },
+      { crop: 'Soybean', hindi: 'सोयाबीन', season: 'Kharif', sowing: 'June-July', harvest: 'September-October', duration: '90-120 days', water: '4-5 irrigations', tips: 'Use JS-335, NRC-37. Inoculate with Rhizobium culture.', yield: '20-25 q/ha' },
+      { crop: 'Groundnut', hindi: 'मूंगफली', season: 'Kharif', sowing: 'June-July', harvest: 'September-October', duration: '100-120 days', water: '4-5 irrigations', tips: 'Use TAG 24, JL 24. Sandy loam soil preferred.', yield: '20-30 q/ha' },
+      { crop: 'Moong', hindi: 'मूंग', season: 'Kharif', sowing: 'June-July', harvest: 'September-October', duration: '60-70 days', water: '3-4 irrigations', tips: 'Use Pusa Visal, PS 16. Quick cash crop.', yield: '8-12 q/ha' },
+      { crop: 'Bajra', hindi: 'बाजरा', season: 'Kharif', sowing: 'June-July', harvest: 'September-October', duration: '75-90 days', water: '3-4 irrigations', tips: 'Use ICMH 356. Very drought tolerant.', yield: '20-30 q/ha' },
+      { crop: 'Jowar', hindi: 'ज्वार', season: 'Kharif', sowing: 'June-July', harvest: 'September-October', duration: '90-110 days', water: '4-5 irrigations', tips: 'Use CSV 17, CSH 14. Dual purpose.', yield: '40-50 q/ha' }
+    ];
+
+    const diseases = [
+      { name: 'Wheat Rust', hindi: 'गेहूं का रस्ट', crops: ['Wheat'], symptoms: 'Orange-brown pustules on stems and leaves.', treatment: 'Apply Propiconazole 25% EC @ 1ml/liter.', prevention: 'Use rust-resistant varieties.' },
+      { name: 'Rice Blast', hindi: 'चावल का ब्लास्ट', crops: ['Rice'], symptoms: 'Diamond-shaped lesions with gray centers.', treatment: 'Apply Tricyclazole 75% WP @ 0.6g/liter.', prevention: 'Use resistant varieties, avoid excess nitrogen.' },
+      { name: 'Cotton Wilt', hindi: 'कपास का विल्ट', crops: ['Cotton'], symptoms: 'Yellowing of leaves, wilting, brown vascular tissues.', treatment: 'Apply Carbendazim + Trichoderma in soil.', prevention: 'Use resistant varieties, crop rotation.' },
+      { name: 'Powdery Mildew', hindi: 'चूर्णिल आसिता', crops: ['Wheat', 'Mustard'], symptoms: 'White powdery coating on leaves.', treatment: 'Apply Sulfur 80% WP @ 3g/liter.', prevention: 'Use resistant varieties.' },
+      { name: 'Tomato Blight', hindi: 'टमाटर का ब्लाइट', crops: ['Tomato'], symptoms: 'Dark brown patches on leaves, white mold.', treatment: 'Apply Mancozeb 75% WP @ 2g/liter.', prevention: 'Use resistant varieties, proper spacing.' },
+      { name: 'Potato Blight', hindi: 'आलू का ब्लाइट', crops: ['Potato'], symptoms: 'Dark water-soaked lesions, white mold.', treatment: 'Apply Mancozeb 75% WP @ 2g/liter.', prevention: 'Use certified seed, proper earthing up.' },
+      { name: 'Aphids', hindi: 'एफिड', crops: ['Mustard', 'Cotton', 'Wheat'], symptoms: 'Curled leaves, sticky honeydew.', treatment: 'Apply Imidacloprid 17.8% SL @ 0.3ml/liter.', prevention: 'Use yellow sticky traps.' },
+      { name: 'Whitefly', hindi: 'सफेद मक्खी', crops: ['Cotton', 'Tomato'], symptoms: 'Yellowing leaves, honeydew, sooty mold.', treatment: 'Apply Imidacloprid 17.8% SL @ 0.3ml/liter.', prevention: 'Remove alternate hosts.' }
+    ];
+
+    const prices = [
+      { name: 'Wheat', hindi: 'गेहूं', price: 2275, msp: 2275, change: '+2.5%', trend: 'up' },
+      { name: 'Rice', hindi: 'धान', price: 2183, msp: 2183, change: '+1.8%', trend: 'up' },
+      { name: 'Maize', hindi: 'मक्का', price: 1850, msp: 1962, change: '+3.1%', trend: 'up' },
+      { name: 'Soybean', hindi: 'सोयाबीन', price: 4200, msp: 4300, change: '+0.8%', trend: 'up' },
+      { name: 'Cotton', hindi: 'कपास', price: 6625, msp: 6620, change: '-0.5%', trend: 'down' },
+      { name: 'Sugarcane', hindi: 'गन्ना', price: 350, msp: 350, change: '0%', trend: 'stable' },
+      { name: 'Mustard', hindi: 'सरसों', price: 5050, msp: 5050, change: '+1.5%', trend: 'up' },
+      { name: 'Groundnut', hindi: 'मूंगफली', price: 6377, msp: 6377, change: '+2.1%', trend: 'up' },
+      { name: 'Gram', hindi: 'चना', price: 5200, msp: 5235, change: '+2.1%', trend: 'up' },
+      { name: 'Moong', hindi: 'मूंग', price: 7196, msp: 7196, change: '+1.2%', trend: 'up' },
+      { name: 'Bajra', hindi: 'बाजरा', price: 2150, msp: 2150, change: '+1.8%', trend: 'up' },
+      { name: 'Potato', hindi: 'आलू', price: 1200, msp: 0, change: '-2.1%', trend: 'down' }
+    ];
+
+    const schemes = [
+      { name: 'PM Kisan Samman Nidhi', hindiName: 'पीएम किसान सम्मान निधि', description: 'Direct income support of ₹6,000 per year', benefits: '₹6,000/year in 3 installments', eligibility: 'All landholding farmer families', link: 'https://pmkisan.gov.in' },
+      { name: 'Kisan Credit Card', hindiName: 'किसान क्रेडिट कार्ड', description: 'Easy credit at 4% interest rate', benefits: 'Loan up to ₹3 lakh at 4% interest', eligibility: 'All farmers, sharecroppers', link: 'https://pmkisan.gov.in' },
+      { name: 'Soil Health Card', hindiName: 'मृदा स्वास्थ्य कार्ड', description: 'Free soil testing and recommendations', benefits: 'Free soil analysis with recommendations', eligibility: 'All farmers', link: 'https://soilhealth.dac.gov.in' },
+      { name: 'PM Fasal Bima Yojana', hindiName: 'पीएम फसल बीमा योजना', description: 'Crop insurance at subsidized premium', benefits: '2% for Kharif, 1.5% for Rabi', eligibility: 'All farmers growing notified crops', link: 'https://pmfby.gov.in' },
+      { name: 'Paramparagat Krishi Vikas Yojana', hindiName: 'परंपरागत कृषि विकास योजना', description: 'Promote chemical-free farming', benefits: 'Training + ₹50,000/ha for organic inputs', eligibility: 'Farmers willing to adopt organic farming', link: 'https://pkmkvib.org' },
+      { name: 'Agriculture Infrastructure Fund', hindiName: 'कृषि अवसंरचना निधि', description: 'Financing for farm-gate infrastructure', benefits: '3% interest + credit guarantee', eligibility: 'FPOs, PACS, Startups', link: 'https://agriinfra.dac.gov.in' }
+    ];
+
+    const tutorials = [
+      { title: 'Wheat Cultivation', hindi: 'गेहूं की खेती', category: 'Crops' },
+      { title: 'Rice Transplanting', hindi: 'धान रोपाई', category: 'Crops' },
+      { title: 'Drip Irrigation', hindi: 'ड्रिप सिंचाई', category: 'Technology' },
+      { title: 'Organic Farming', hindi: 'जैविक खेती', category: 'Organic' }
+    ];
+
+    const tips = [
+      { title: 'Morning Irrigation', hindi: 'सुबह की सिंचाई' },
+      { title: 'Neem for Pests', hindi: 'कीटों के लिए नीम' },
+      { title: 'Compost Fertilizer', hindi: 'खाद खाद' },
+      { title: 'Crop Rotation', hindi: 'फसल चक्र' }
+    ];
+
+    const forecast = [
+      { day: 'Today', temp: 32, condition: '☁️', humidity: 65 },
+      { day: 'Tomorrow', temp: 33, condition: '☀️', humidity: 55 },
+      { day: 'Wed', temp: 28, condition: '🌧️', humidity: 85 },
+      { day: 'Thu', temp: 30, condition: '☁️', humidity: 70 },
+      { day: 'Fri', temp: 34, condition: '☀️', humidity: 45 },
+      { day: 'Sat', temp: 35, condition: '☀️', humidity: 40 },
+      { day: 'Sun', temp: 33, condition: '⛅', humidity: 55 }
+    ];
+
+    // ==================== FUNCTIONS ====================
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(pageId).classList.add('active');
+      document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function renderCrops(filter = 'all') {
+      const list = document.getElementById('cropList');
+      list.innerHTML = crops.filter(c => filter === 'all' || c.season === filter).map(c => `
+        <div class="crop-card">
+          <div class="crop-header">
+            <div class="crop-names">
+              <h3>${c.crop}</h3>
+              <span class="hindi">${c.hindi}</span>
+            </div>
+            <span class="season-badge ${c.season.toLowerCase()}">${c.season}</span>
+          </div>
+          <div class="crop-details">
+            <div class="crop-detail"><span class="label">Sowing</span><span class="value">${c.sowing}</span></div>
+            <div class="crop-detail"><span class="label">Harvest</span><span class="value">${c.harvest}</span></div>
+            <div class="crop-detail"><span class="label">Duration</span><span class="value">${c.duration}</span></div>
+            <div class="crop-detail"><span class="label">Yield</span><span class="value">${c.yield}</span></div>
+          </div>
+          <div class="crop-tips"><strong>💡 Tips:</strong> ${c.tips}</div>
+        </div>
+      `).join('');
+    }
+
+    function filterSeason(season) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+      renderCrops(season);
+    }
+
+    function filterCrops() {
+      const search = document.getElementById('cropSearch').value.toLowerCase();
+      document.querySelectorAll('.crop-card').forEach(card => {
+        card.style.display = card.textContent.toLowerCase().includes(search) ? 'block' : 'none';
+      });
+    }
+
+    function renderDiseases() {
+      document.getElementById('diseaseGrid').innerHTML = diseases.map(d => `
+        <div class="disease-card" onclick="showDisease('${d.name}')">
+          <h4>${d.name}</h4>
+          <span class="hindi">${d.hindi}</span>
+        </div>
+      `).join('');
+    }
+
+    function showDisease(name) {
+      const d = diseases.find(d => d.name === name);
+      if (d) {
+        document.getElementById('diseaseResult').style.display = 'block';
+        document.getElementById('diseaseResult').innerHTML = `
+          <div class="disease-header">
+            <span style="font-size:40px;">🔬</span>
+            <div><h2>${d.name}</h2><span class="hindi">${d.hindi}</span></div>
+          </div>
+          <div class="disease-section"><h4>🔍 Symptoms</h4><p>${d.symptoms}</p></div>
+          <div class="disease-section"><h4>💊 Treatment</h4><p class="treatment">${d.treatment}</p></div>
+          <div class="disease-section"><h4>🛡️ Prevention</h4><p>${d.prevention}</p></div>
+        `;
+      }
+    }
+
+    function renderPrices() {
+      document.getElementById('priceList').innerHTML = `
+        <div class="price-header-row">
+          <span>Crop / फसल</span>
+          <span>Price / भाव</span>
+          <span>MSP</span>
+          <span>Change</span>
+        </div>
+        ${prices.map(p => `
+          <div class="price-row">
+            <div class="crop-info"><span class="crop-name">${p.name}</span><span class="crop-hindi">${p.hindi}</span></div>
+            <div><span class="price">₹${p.price}</span></div>
+            <div><span class="msp">${p.msp > 0 ? '₹' + p.msp : '-'}</span></div>
+            <div class="change-info ${p.trend}">${p.trend === 'up' ? '↑' : p.trend === 'down' ? '↓' : '•'} ${p.change}</div>
+          </div>
+        `).join('')}
+      `;
+    }
+
+    function renderSchemes() {
+      document.getElementById('schemesList').innerHTML = schemes.map(s => `
+        <div class="scheme-card">
+          <div class="scheme-header">
+            <div class="scheme-title"><h3>${s.name}</h3><span class="hindi">${s.hindiName}</span></div>
+          </div>
+          <div class="scheme-details">
+            <p class="description">${s.description}</p>
+            <div class="detail-item"><span class="label">Benefits:</span><span class="value">${s.benefits}</span></div>
+            <div class="detail-item"><span class="label">Eligibility:</span><span class="value">${s.eligibility}</span></div>
+            <a href="${s.link}" target="_blank" class="btn">Apply Now</a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderForecast() {
+      document.getElementById('forecastGrid').innerHTML = forecast.map(f => `
+        <div class="forecast-day">
+          <span class="day-name">${f.day}</span>
+          <span style="font-size:24px;">${f.condition}</span>
+          <span class="day-temp">${f.temp}°</span>
+          <span style="font-size:12px;">💧 ${f.humidity}%</span>
+        </div>
+      `).join('');
+    }
+
+    function renderTips() {
+      document.getElementById('farmingTips').innerHTML = [
+        'Check soil moisture before irrigation',
+        'Apply fertilizer after rain for better absorption',
+        'Monitor crops for pest attack - early detection saves crops',
+        'Harvest wheat when grain hardness is optimal'
+      ].map(t => `<div class="tip-card"><span class="tip-icon">✓</span><div><h4>${t}</h4></div></div>`).join('');
+    }
+
+    function renderTutorials() {
+      document.getElementById('tutorialsGrid').innerHTML = tutorials.map(t => `
+        <div class="tutorial-card">
+          <div class="tumbnail">▶️</div>
+          <div class="tutorial-info">
+            <span class="category">${t.category}</span>
+            <h4>${t.title}</h4>
+            <span class="hindi">${t.hindi}</span>
+          </div>
+        </div>
+      `).join('');
+      document.getElementById('tipsList').innerHTML = tips.map(t => `
+        <div class="tip-card"><span class="tip-icon">✓</span><div><h4>${t.title}</h4><span class="hindi">${t.hindi}</span></div></div>
+      `).join('');
+    }
+
+    function calcProfit() {
+      const area = parseFloat(document.getElementById('area').value) || 0;
+      const cost = parseFloat(document.getElementById('cost').value) || 0;
+      const yieldAmt = parseFloat(document.getElementById('yield').value) || 0;
+      const price = parseFloat(document.getElementById('price').value) || 0;
+
+      const income = yieldAmt * price;
+      const profit = income - cost;
+
+      document.getElementById('totalIncome').textContent = '₹' + income.toLocaleString();
+      document.getElementById('totalCost').textContent = '₹' + cost.toLocaleString();
+      document.getElementById('netProfit').innerHTML = `<span>Net ${profit >= 0 ? 'Profit' : 'Loss'}</span><span>₹${Math.abs(profit).toLocaleString()}</span>`;
+      document.getElementById('netProfit').className = 'result-item highlight ' + (profit >= 0 ? '' : 'loss');
+    }
+
+    function openChat() {
+      // Try to load JotForm script
+      if (!window.jotformChatLoaded) {
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jotfor.ms/agent/embedjs/0198e605e9da7ce594cb0525c300add2a9f9/embed.js';
+        script.async = true;
+        script.onload = function() { window.jotformChatLoaded = true; };
+        document.head.appendChild(script);
+      }
+      // Open chat in new window
+      window.open('https://www.jotform.com/chat/0198e605e9da7ce594cb0525c300add2a9f9', '_blank');
+    }
+
+    function openVoice() {
+      // Try to load JotForm script
+      if (!window.jotformVoiceLoaded) {
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jotfor.ms/agent/embedjs/0198e605e9da7ce594cb0525c300add2a9f9/embed.js?isVoice=1';
+        script.async = true;
+        script.onload = function() { window.jotformVoiceLoaded = true; };
+        document.head.appendChild(script);
+      }
+      // Open voice in new window
+      window.open('https://www.jotform.com/voice/0198e605e9da7ce594cb0525c300add2a9f9', '_blank');
+    }
+
+    // Initialize
+    renderCrops();
+    renderDiseases();
+    renderPrices();
+    renderSchemes();
+    renderForecast();
+    renderTips();
+    renderTutorials();
+  </script>
+
+  <!-- Footer -->
+  <footer style="background:#166534;color:white;text-align:center;padding:20px;margin-top:40px;">
+    <p style="font-size:18px;font-weight:600;">CEO and Founder - Vedanshu Rathi</p>
+    <p style="font-size:16px;">📧 vedanshurathi@gmail.com</p>
+    <p style="font-size:14px;opacity:0.8;margin-top:10px;">© 2024 Kisan Suraksha AI - All Rights Reserved</p>
+  </footer>
+
+</body>
+</html>
